@@ -1,6 +1,7 @@
 package com.example.composeexample2
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -73,7 +74,7 @@ class MainActivity : ComponentActivity() {
                         Image(
                             painter = painterResource(id = diceImage),
                             contentDescription = null,
-                            modifier = Modifier.size(100.dp)
+                            modifier = Modifier.size(10.dp)
                         )
                     }
                     MainViewContainerState.ViewCoin -> {
@@ -81,21 +82,30 @@ class MainActivity : ComponentActivity() {
                             Image(
                                 painter = painterResource(id = coinImage),
                                 contentDescription = null,
-                                modifier = Modifier.size(100.dp)
+                                modifier = Modifier.size(400.dp)
                             )
                         }
                     }
                 }
             }
             Button(onClick = {
-                if (viewModel.containerState.value == MainViewContainerState.ViewDice) {
-                    result =(1..6).random()
+                result = if (viewModel.containerState.value == MainViewContainerState.ViewDice) {
+                    (1..6).random()
                 } else {
-                    result = (1..2).random()
+                    (1..2).random()
                 }
             }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.DarkGray)) {
                 Text(text = if (viewModel.containerState.value == MainViewContainerState.ViewDice) "Lanzar Dado" else "Lanzar Moneda", color = Color.White)
             }
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                text = if (viewModel.containerState.value == MainViewContainerState.ViewDice) result.toString() else {
+                    when (result) {
+                        1 -> "Cara"
+                        else -> "Cruz"
+                    }
+                }
+            )
         }
     }
 
